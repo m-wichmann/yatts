@@ -116,7 +116,6 @@ class Season(object):
             data = json.load(season_file)
             self.JSONToData(data)
             season_file.close()
-            # TODO check what last used player id is, to set id for next added player
 
 if __name__ == '__main__':
     # Test for data classes
