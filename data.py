@@ -33,16 +33,25 @@ class Season(object):
     def __init__(self):
         self.players = []
         self.matches = []
-        self.next_player_id = 1
+
+    def next_player_id(self):
+        # TODO: also look for removed ids, so they don't grow endless
+        player_ids = []
+        for p in self.players:
+            player_ids.append(p.player_id)
+        ret = 0
+        try:
+            ret = max(player_ids) + 1
+        except:
+            pass
+        return ret
 
     def addPlayer(self, player_name):
         """add new player to list"""
-        new_player = Player(player_name, self.next_player_id)
-        self.next_player_id += 1
+        new_player = Player(player_name, self.next_player_id())
         self.players.append(new_player)
-        self.players.sort()
-        print(self.players)
-        #TODO sort always by player_id
+        # sort list of players by id
+        self.players = sorted(self.players, key=lambda x: x.player_id)
         
     def removePlayer(self, player_name):
         for player in self.players:
@@ -70,7 +79,6 @@ class Season(object):
             JSONdata["matches"].append(match.__dict__)
         return JSONdata
 
-
     def JSONToData(self, data):
         self.players = []
         self.matches = []
@@ -86,7 +94,6 @@ class Season(object):
         print(temp)
         json.dump(temp, season_file, indent=4)
         season_file.close()
-
 
     def loadData(self, filename):
         if os.path.exists(filename):

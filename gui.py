@@ -81,11 +81,16 @@ def handleAddPlayer():
     if resp:
         MANAGER.addPlayer(name)
         fillPlayerLists()
+        # save new data to file
+        MANAGER.saveData(DATA_FILE)
 
 def handleRemovePlayer():
-    MANAGER.removePlayer(PLAYER_DIALOG.player_list.currentItem())
+    # TODO: should removing be done on a name or player_id basis?!
+    MANAGER.removePlayer(PLAYER_DIALOG.player_list.currentItem().text())
     PLAYER_DIALOG.player_list.removeItemWidget(PLAYER_DIALOG.player_list.currentItem())
     fillPlayerLists()
+    # save new data to file
+    MANAGER.saveData(DATA_FILE)
 
 def buildEditMatchesDialog():
     MATCHES_DIALOG.add_new_match_button.clicked.connect(handle_add_match)
