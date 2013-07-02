@@ -11,6 +11,7 @@ import json
 import os
 
 class Match(object):
+    """Contains a single match with all necessary information."""
     def __init__(self, player1, player2, points1, points2, serveplayer, time):
         self.player1 = player1
         self.player2 = player2
@@ -53,7 +54,7 @@ class Season(object):
         #if self.player.
         
         # check if point are plausible
-        if not (points1 == 15 or points2 == 15 or (points1 > 14 and points2 > 14 and abs(points1 - points2) > 1)):
+        if not (points1 == 11 or points2 == 11 or (points1 >= 10 and points2 > 10 and abs(points1 - points2) > 1)):
             return -1
         
         # save match in list
@@ -80,7 +81,7 @@ class Season(object):
             self.matches.append(Match(match["player1"], match["player2"], match["points1"], match["points2"], match["serveplayer"], match["time"]))
 
     def saveData(self, filename):
-        season_file = open(filename, "wb")
+        season_file = open(filename, "w")
         temp = self.dataToJSON()
         print(temp)
         json.dump(temp, season_file, indent=4)
@@ -89,7 +90,7 @@ class Season(object):
 
     def loadData(self, filename):
         if os.path.exists(filename):
-            season_file = open(filename, "rb")
+            season_file = open(filename, "r")
             data = json.load(season_file)
             self.JSONToData(data)
             season_file.close()
