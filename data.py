@@ -80,7 +80,7 @@ class Season(object):
             self.matches.append(Match(match["player1"], match["player2"], match["points1"], match["points2"], match["serveplayer"], match["time"]))
 
     def saveData(self, filename):
-        season_file = open(filename, "wb")
+        season_file = open(filename, "w")
         temp = self.dataToJSON()
         print(temp)
         json.dump(temp, season_file, indent=4)
@@ -89,7 +89,7 @@ class Season(object):
 
     def loadData(self, filename):
         if os.path.exists(filename):
-            season_file = open(filename, "rb")
+            season_file = open(filename, "r")
             data = json.load(season_file)
             self.JSONToData(data)
             season_file.close()
