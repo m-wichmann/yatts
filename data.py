@@ -20,13 +20,18 @@ class Match(object):
         self.serveplayer = serveplayer
         self.time = time
 
+    def __str__(self):
+        return ("%s\t%i:%i\t%s - %r %s" % (self.player1, self.points1, self.points2, self.player2, self.serveplayer, self.time))
+
 
 class Player(object):
+    # TODO: is player_id necessary?! Or just use name?
     def __init__(self, name, player_id):
         self.name = name
         self.player_id = player_id
+
     def __str__(self):
-        return str(self.name)
+        return ("%i\t%s" % (self.player_id, self.name))
 
 
 class Season(object):
@@ -34,7 +39,17 @@ class Season(object):
         self.players = []
         self.matches = []
 
-    def next_player_id(self):
+    def __str__(self):
+        ret = ""
+        ret += "Players:\n"
+        for p in self.players:
+            ret += p.__str__() + "\n"
+        ret += "\nMatches:\n"
+        for m in self.matches:
+            ret += m.__str__() + "\n"
+        return ret
+
+    def nextPlayerID(self):
         # TODO: also look for removed ids, so they don't grow endless
         player_ids = []
         for p in self.players:
@@ -48,7 +63,7 @@ class Season(object):
 
     def addPlayer(self, player_name):
         """add new player to list"""
-        new_player = Player(player_name, self.next_player_id())
+        new_player = Player(player_name, self.nextPlayerID())
         self.players.append(new_player)
         # sort list of players by id
         self.players = sorted(self.players, key=lambda x: x.player_id)
@@ -102,4 +117,19 @@ class Season(object):
             self.JSONToData(data)
             season_file.close()
             # TODO check what last used player id is, to set id for next added player
+
+if __name__ == '__main__':
+    # Test for data classes
+    p1 = Player("Martin", 0)
+    p2 = Player("Markus", 1)
+    print(p1)
+
+    m = Match(p1, p2, 12, 14, True, "time")
+    print(m)
+
+    s = Season()
+    s.addPlayer("Martin")
+    s.addPlayer("Markus")
+    s.addMatch("Martin", "Markus", 12, 11, True, "time")
+    print(s)
 
