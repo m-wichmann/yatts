@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Dialog</class>
- <widget class="QDialog" name="Dialog">
+ <class>ShowMatchesDialog</class>
+ <widget class="QDialog" name="ShowMatchesDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>494</height>
+    <width>529</width>
+    <height>496</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
     <rect>
      <x>10</x>
      <y>230</y>
-     <width>381</width>
+     <width>511</width>
      <height>251</height>
     </rect>
    </property>
@@ -28,9 +28,9 @@
    <widget class="QComboBox" name="player1_combo">
     <property name="geometry">
      <rect>
-      <x>160</x>
-      <y>30</y>
-      <width>78</width>
+      <x>80</x>
+      <y>60</y>
+      <width>131</width>
       <height>24</height>
      </rect>
     </property>
@@ -38,9 +38,9 @@
    <widget class="QComboBox" name="player2_combo">
     <property name="geometry">
      <rect>
-      <x>160</x>
+      <x>300</x>
       <y>60</y>
-      <width>78</width>
+      <width>131</width>
       <height>24</height>
      </rect>
     </property>
@@ -48,9 +48,9 @@
    <widget class="QSpinBox" name="score1">
     <property name="geometry">
      <rect>
-      <x>160</x>
+      <x>110</x>
       <y>90</y>
-      <width>52</width>
+      <width>71</width>
       <height>23</height>
      </rect>
     </property>
@@ -61,9 +61,9 @@
    <widget class="QSpinBox" name="score2">
     <property name="geometry">
      <rect>
-      <x>160</x>
-      <y>120</y>
-      <width>52</width>
+      <x>330</x>
+      <y>90</y>
+      <width>71</width>
       <height>23</height>
      </rect>
     </property>
@@ -74,9 +74,9 @@
    <widget class="QComboBox" name="serve_player_combo">
     <property name="geometry">
      <rect>
-      <x>160</x>
-      <y>150</y>
-      <width>78</width>
+      <x>250</x>
+      <y>140</y>
+      <width>131</width>
       <height>24</height>
      </rect>
     </property>
@@ -84,9 +84,9 @@
    <widget class="QDateTimeEdit" name="dateTimeEdit">
     <property name="geometry">
      <rect>
-      <x>160</x>
+      <x>250</x>
       <y>180</y>
-      <width>194</width>
+      <width>131</width>
       <height>23</height>
      </rect>
     </property>
@@ -111,7 +111,7 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>120</x>
       <y>30</y>
       <width>55</width>
       <height>15</height>
@@ -124,8 +124,8 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>60</y>
+      <x>340</x>
+      <y>30</y>
       <width>55</width>
       <height>15</height>
      </rect>
@@ -137,7 +137,7 @@
    <widget class="QPushButton" name="add_new_match_button">
     <property name="geometry">
      <rect>
-      <x>270</x>
+      <x>200</x>
       <y>220</y>
       <width>94</width>
       <height>24</height>
@@ -147,36 +147,10 @@
      <string>Add match</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>90</y>
-      <width>91</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Score Player 1</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_4">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>120</y>
-      <width>91</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Score Player 2</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_5">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>160</x>
       <y>150</y>
       <width>55</width>
       <height>15</height>
@@ -189,7 +163,7 @@
    <widget class="QLabel" name="label_6">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>160</x>
       <y>180</y>
       <width>55</width>
       <height>15</height>
@@ -205,10 +179,56 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>381</width>
+     <width>511</width>
      <height>211</height>
     </rect>
    </property>
+   <property name="rowCount">
+    <number>10</number>
+   </property>
+   <property name="columnCount">
+    <number>6</number>
+   </property>
+   <row/>
+   <row/>
+   <row/>
+   <row/>
+   <row/>
+   <row/>
+   <row/>
+   <row/>
+   <row/>
+   <row/>
+   <column>
+    <property name="text">
+     <string>Player 1</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Player2</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Score 1</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Score 2</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Serve</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Time</string>
+    </property>
+   </column>
   </widget>
  </widget>
  <resources/>
