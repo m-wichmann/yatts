@@ -30,7 +30,7 @@ class Player(object):
 
 class Season(object):
     def __init__(self):
-        self.player = []
+        self.players = []
         self.matches = []
         self.next_player_id = 1
 
@@ -38,8 +38,8 @@ class Season(object):
         """add new player to list"""
         new_player = Player(player_name, self.next_player_id)
         self.next_player_id += 1
-        self.player.append(new_player)
-        self.player.sort()
+        self.players.append(new_player)
+        self.players.sort()
         return new_player
 
 
@@ -57,7 +57,7 @@ class Season(object):
 
     def dataToJSON(self):
         JSONdata = {"player": [], "matches": []}
-        for player in self.player:
+        for player in self.players:
             JSONdata["player"].append(player.__dict__)
         for match in self.matches:
             JSONdata["matches"].append(match.__dict__)
@@ -65,20 +65,19 @@ class Season(object):
 
 
     def JSONToData(self, data):
-        self.player = []
+        self.players = []
         self.matches = []
 
         for player in data["player"]:
-            self.player.append(Player(player["name"], player["player_id"]))
+            self.players.append(Player(player["name"], player["player_id"]))
         for match in data["matches"]:
             self.matches.append(Match(match["playerid1"], match["playerid2"], match["points1"], match["points2"], match["serveplayer"], match["time"]))
 
     def saveData(self, filename):
-        if os.path.exists(filename):
-            season_file = open(filename, "wb")
-            temp = self.dataToJSON()
-            json.dump(temp, season_file, indent=4)
-            season_file.close()
+        season_file = open(filename, "wb")
+        temp = self.dataToJSON()
+        json.dump(temp, season_file, indent=4)
+        season_file.close()
 
 
     def loadData(self, filename):
@@ -87,4 +86,5 @@ class Season(object):
             data = json.load(season_file)
             self.JSONToData(data)
             season_file.close()
+            # TODO check what last used player id is, to set id for next added player
 

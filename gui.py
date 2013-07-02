@@ -12,7 +12,7 @@ Graphical user interface for YATTS.
 # - 
 # - 
 
-from PyQt4 import QtGui, uic
+from PyQt4 import QtGui, uic, QtCore
 import sys
 import yatts.data
 
@@ -62,20 +62,34 @@ class YattsStarter(QtGui.QMainWindow):
         
     def handle_view(self):
         """show dialog with statistical information"""
-        print ("eee")
+        STATISTICS_DIALOG.show()
         
     def handle_edit(self):
         """show dialog to edit game data"""
-        print ("fff")
+        MATCHES_DIALOG.show()
 
 
 def buildPlayerManagementDialog(dialog):
     dialog.close_button.clicked.connect(dialog.close)
-    for player in MANAGER.player:
+    for player in MANAGER.players:
         print(player.name)
         #player_item = QtGui.QListWidgetItem(player.name)
         #dialog.player_list.add_item(player_item)
 
+def buildEditMatchesDialog(dialog):
+    dialog.add_new_match_button.clicked.connect(handle_add_match)
+    dialog.player2_combo.clear()
+    #items = [QtCore.QString()]
+    for player in MANAGER.players:
+        dialog.player2_combo.addItem("ddd")
+    #dialog.player2_combo.addItems(items)
+
+def handle_add_match():
+    pass
+
+def buildViewStatisticsDialog(dialog):
+    #view_match_table
+    pass
 
 if __name__ == "__main__":
     APP_NAME = "Yet Another Table Tennis Statistic"
@@ -83,7 +97,7 @@ if __name__ == "__main__":
 
     # load player names, game data from json file    
     MANAGER = yatts.data.Season()
-    MANAGER.loadData(DATA_FILE)
+    #MANAGER.loadData(DATA_FILE)
     MANAGER.addPlayer(yatts.data.Player("Christian", 1))
     MANAGER.addPlayer(yatts.data.Player("Martin", 2))
     
@@ -91,7 +105,11 @@ if __name__ == "__main__":
       
     ### load ui files for dialogs
     PLAYER_DIALOG = uic.loadUi("player_management.ui")
+    MATCHES_DIALOG = uic.loadUi("show_matches.ui")
+    STATISTICS_DIALOG = uic.loadUi("view_statistics.ui")
     buildPlayerManagementDialog(PLAYER_DIALOG)
+    buildEditMatchesDialog(MATCHES_DIALOG)
+    buildViewStatisticsDialog(STATISTICS_DIALOG)
     
     STARTER_WIDGET = YattsStarter()  
     STARTER_WIDGET.show()
