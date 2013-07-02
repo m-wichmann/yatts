@@ -73,35 +73,54 @@ def buildPlayerManagementDialog():
     PLAYER_DIALOG.close_button.clicked.connect(PLAYER_DIALOG.close)
     PLAYER_DIALOG.add_player_button.clicked.connect(handleAddPlayer)
     PLAYER_DIALOG.remove_player_button.clicked.connect(handleRemovePlayer)
-    fillPlayerList()
-    
-def fillPlayerList():
-    PLAYER_DIALOG.player_list.clear()
-    for player in MANAGER.players:
-        PLAYER_DIALOG.player_list.addItem(player.name)
+    fillPlayerLists()
 
 def handleAddPlayer():
     title, msg = 'Add player...', 'Enter player name:'
     name, resp = QtGui.QInputDialog.getText(None,title, msg)
     if resp:
         MANAGER.addPlayer(name)
-        fillPlayerList()
+        fillPlayerLists()
 
 def handleRemovePlayer():
     MANAGER.removePlayer(PLAYER_DIALOG.player_list.currentItem())
     PLAYER_DIALOG.player_list.removeItemWidget(PLAYER_DIALOG.player_list.currentItem())
-    fillPlayerList()
+    fillPlayerLists()
 
 def buildEditMatchesDialog():
     MATCHES_DIALOG.add_new_match_button.clicked.connect(handle_add_match)
+    fillTable()
+    fillPlayerLists()
+
+def fillTable():
+    MATCHES_DIALOG.view_match_table.clearContents()
+    i = 0
+    for match in MANAGER.matches:
+        j = 0
+        MATCHES_DIALOG.view_match_table.setItem(i, j, QtGui.QTableWidgetItem(match.player1));j+=1
+        MATCHES_DIALOG.view_match_table.setItem(i, j, QtGui.QTableWidgetItem(match.player2));j+=1
+        MATCHES_DIALOG.view_match_table.setItem(i, j, QtGui.QTableWidgetItem(str(match.points1)));j+=1
+        MATCHES_DIALOG.view_match_table.setItem(i, j, QtGui.QTableWidgetItem(str(match.points2)));j+=1
+        MATCHES_DIALOG.view_match_table.setItem(i, j, QtGui.QTableWidgetItem(match.serveplayer));j+=1
+        MATCHES_DIALOG.view_match_table.setItem(i, j, QtGui.QTableWidgetItem(match.time.toString()))
+        i += 1
+
+def fillPlayerLists():
+    PLAYER_DIALOG.player_list.clear()
+    for player in MANAGER.players:
+        PLAYER_DIALOG.player_list.addItem(player.name)
+    PLAYER_DIALOG.player_list.sort()
+    MATCHES_DIALOG.player1_combo.clear()
     MATCHES_DIALOG.player2_combo.clear()
-    #items = [QtCore.QString()]
+    MATCHES_DIALOG.serve_player_combo.clear()
     for player in MANAGER.players:
         MATCHES_DIALOG.player1_combo.addItem(str(player.name))
         MATCHES_DIALOG.player2_combo.addItem(str(player.name))
         MATCHES_DIALOG.serve_player_combo.addItem(str(player.name))
-    #dialog.player2_combo.addItems(items)
-
+    MATCHES_DIALOG.player1_combo.sort()
+    MATCHES_DIALOG.player2_combo.sort()
+    MATCHES_DIALOG.serve_player_combo.sort()
+        
 def handle_add_match():
     print("Handle add match...")
     # check for plausible data
@@ -116,21 +135,20 @@ def handle_add_match():
     if player1 != serve_player and player2 != serve_player:
         return
     MANAGER.addMatch(player1, player2, score1, score2, serve_player, time)
-    print("Match added.")
+    fillTable()
 
 def buildViewStatisticsDialog():
     #view_match_table
     print("Build statistics dialog...")
 
+
 if __name__ == "__main__":
     APP_NAME = "Yet Another Table Tennis Statistic"
     DATA_FILE = "tabletennis2013.dat"
 
-    # load player names, game data from json file    
+    # load player names and game data from json file    
     MANAGER = yatts.data.Season()
     MANAGER.loadData(DATA_FILE)
-    #MANAGER.addPlayer("Christian")
-    #MANAGER.addPlayer("Martin")
     
     APP = QtGui.QApplication(sys.argv)
       

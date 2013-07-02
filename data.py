@@ -59,7 +59,7 @@ class Season(object):
         # save match in list
         match = Match(player1, player2, points1, points2, serveplayer, time)
         self.matches.append(match)
-        print(self.matches)
+        print("Match added.")
 
     def dataToJSON(self):
         JSONdata = {"players": [], "matches": []}
@@ -77,7 +77,7 @@ class Season(object):
         for player in data["players"]:
             self.players.append(Player(player["name"], player["player_id"]))
         for match in data["matches"]:
-            self.matches.append(Match(match["playerid1"], match["playerid2"], match["points1"], match["points2"], match["serveplayer"], match["time"]))
+            self.matches.append(Match(match["player1"], match["player2"], match["points1"], match["points2"], match["serveplayer"], match["time"]))
 
     def saveData(self, filename):
         season_file = open(filename, "wb")
