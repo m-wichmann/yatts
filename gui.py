@@ -14,14 +14,14 @@ Graphical user interface for YATTS.
 
 from PyQt4 import QtGui, uic
 import sys
-import yatts.data
+import data
 
 
 class YattsStarter(QtGui.QMainWindow):  
-    """Main window for JATTS"""
+    """Main window for YATTS"""
     
     def __init__(self):
-        """initialize starter dialog for JATTS"""
+        """initialize starter dialog for YATTS"""
         QtGui.QMainWindow.__init__(self)
         self.contentWidget = QtGui.QWidget()
         self.titleLabel = QtGui.QLabel(APP_NAME)
@@ -109,7 +109,7 @@ def fillPlayerLists():
     PLAYER_DIALOG.player_list.clear()
     for player in MANAGER.players:
         PLAYER_DIALOG.player_list.addItem(player.name)
-    PLAYER_DIALOG.player_list.sort()
+    #PLAYER_DIALOG.player_list.sort()
     MATCHES_DIALOG.player1_combo.clear()
     MATCHES_DIALOG.player2_combo.clear()
     MATCHES_DIALOG.serve_player_combo.clear()
@@ -117,9 +117,9 @@ def fillPlayerLists():
         MATCHES_DIALOG.player1_combo.addItem(str(player.name))
         MATCHES_DIALOG.player2_combo.addItem(str(player.name))
         MATCHES_DIALOG.serve_player_combo.addItem(str(player.name))
-    MATCHES_DIALOG.player1_combo.sort()
-    MATCHES_DIALOG.player2_combo.sort()
-    MATCHES_DIALOG.serve_player_combo.sort()
+    #MATCHES_DIALOG.player1_combo.sort()
+    #MATCHES_DIALOG.player2_combo.sort()
+    #MATCHES_DIALOG.serve_player_combo.sort()
         
 def handle_add_match():
     print("Handle add match...")
@@ -147,7 +147,7 @@ if __name__ == "__main__":
     DATA_FILE = "tabletennis2013.dat"
 
     # load player names and game data from json file    
-    MANAGER = yatts.data.Season()
+    MANAGER = data.Season()
     MANAGER.loadData(DATA_FILE)
     
     APP = QtGui.QApplication(sys.argv)
