@@ -12,7 +12,7 @@ Graphical user interface for YATTS.
 # - 
 # - 
 
-from PyQt4 import QtGui, uic, QtCore
+from PyQt4 import QtGui, uic
 import sys
 import yatts.data
 
@@ -69,27 +69,58 @@ class YattsStarter(QtGui.QMainWindow):
         MATCHES_DIALOG.show()
 
 
-def buildPlayerManagementDialog(dialog):
-    dialog.close_button.clicked.connect(dialog.close)
+def buildPlayerManagementDialog():
+    PLAYER_DIALOG.close_button.clicked.connect(PLAYER_DIALOG.close)
+    PLAYER_DIALOG.add_player_button.clicked.connect(handleAddPlayer)
+    PLAYER_DIALOG.remove_player_button.clicked.connect(handleRemovePlayer)
+    fillPlayerList()
+    
+def fillPlayerList():
+    PLAYER_DIALOG.player_list.clear()
     for player in MANAGER.players:
-        print(player.name)
-        #player_item = QtGui.QListWidgetItem(player.name)
-        #dialog.player_list.add_item(player_item)
+        PLAYER_DIALOG.player_list.addItem(player.name)
 
-def buildEditMatchesDialog(dialog):
-    dialog.add_new_match_button.clicked.connect(handle_add_match)
-    dialog.player2_combo.clear()
+def handleAddPlayer():
+    title, msg = 'Add player...', 'Enter player name:'
+    name, resp = QtGui.QInputDialog.getText(None,title, msg)
+    if resp:
+        MANAGER.addPlayer(name)
+        fillPlayerList()
+
+def handleRemovePlayer():
+    MANAGER.removePlayer(PLAYER_DIALOG.player_list.currentItem())
+    PLAYER_DIALOG.player_list.removeItemWidget(PLAYER_DIALOG.player_list.currentItem())
+    fillPlayerList()
+
+def buildEditMatchesDialog():
+    MATCHES_DIALOG.add_new_match_button.clicked.connect(handle_add_match)
+    MATCHES_DIALOG.player2_combo.clear()
     #items = [QtCore.QString()]
     for player in MANAGER.players:
-        dialog.player2_combo.addItem("ddd")
+        MATCHES_DIALOG.player1_combo.addItem(str(player.name))
+        MATCHES_DIALOG.player2_combo.addItem(str(player.name))
+        MATCHES_DIALOG.serve_player_combo.addItem(str(player.name))
     #dialog.player2_combo.addItems(items)
 
 def handle_add_match():
-    pass
+    print("Handle add match...")
+    # check for plausible data
+    player1 = MATCHES_DIALOG.player1_combo.itemText(MATCHES_DIALOG.player1_combo.currentIndex()) 
+    player2 = MATCHES_DIALOG.player2_combo.itemText(MATCHES_DIALOG.player2_combo.currentIndex())
+    serve_player = MATCHES_DIALOG.serve_player_combo.itemText(MATCHES_DIALOG.serve_player_combo.currentIndex())
+    time = MATCHES_DIALOG.dateTimeEdit.dateTime()
+    score1 = MATCHES_DIALOG.score1.value()
+    score2 = MATCHES_DIALOG.score2.value()
+    if player1 == player2:
+        return
+    if player1 != serve_player and player2 != serve_player:
+        return
+    MANAGER.addMatch(player1, player2, score1, score2, serve_player, time)
+    print("Match added.")
 
-def buildViewStatisticsDialog(dialog):
+def buildViewStatisticsDialog():
     #view_match_table
-    pass
+    print("Build statistics dialog...")
 
 if __name__ == "__main__":
     APP_NAME = "Yet Another Table Tennis Statistic"
@@ -97,9 +128,9 @@ if __name__ == "__main__":
 
     # load player names, game data from json file    
     MANAGER = yatts.data.Season()
-    #MANAGER.loadData(DATA_FILE)
-    MANAGER.addPlayer(yatts.data.Player("Christian", 1))
-    MANAGER.addPlayer(yatts.data.Player("Martin", 2))
+    MANAGER.loadData(DATA_FILE)
+    #MANAGER.addPlayer("Christian")
+    #MANAGER.addPlayer("Martin")
     
     APP = QtGui.QApplication(sys.argv)
       
@@ -107,9 +138,9 @@ if __name__ == "__main__":
     PLAYER_DIALOG = uic.loadUi("player_management.ui")
     MATCHES_DIALOG = uic.loadUi("show_matches.ui")
     STATISTICS_DIALOG = uic.loadUi("view_statistics.ui")
-    buildPlayerManagementDialog(PLAYER_DIALOG)
-    buildEditMatchesDialog(MATCHES_DIALOG)
-    buildViewStatisticsDialog(STATISTICS_DIALOG)
+    buildPlayerManagementDialog()
+    buildEditMatchesDialog()
+    buildViewStatisticsDialog()
     
     STARTER_WIDGET = YattsStarter()  
     STARTER_WIDGET.show()

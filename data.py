@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Data stores for player data, matches and more.
+Data store for player data, matches and more.
 
 @author: Christian Wichmann
 """
@@ -40,8 +40,13 @@ class Season(object):
         self.next_player_id += 1
         self.players.append(new_player)
         self.players.sort()
-        return new_player
-
+        print(self.players)
+        #TODO sort always by player_id
+        
+    def removePlayer(self, player_name):
+        for player in self.players:
+            if player.name == player_name:
+                self.players.remove(player)
 
     def addMatch(self, player1, player2, points1, points2, serveplayer, time):
         # check if player are in list of players
@@ -54,11 +59,12 @@ class Season(object):
         # save match in list
         match = Match(player1, player2, points1, points2, serveplayer, time)
         self.matches.append(match)
+        print(self.matches)
 
     def dataToJSON(self):
-        JSONdata = {"player": [], "matches": []}
+        JSONdata = {"players": [], "matches": []}
         for player in self.players:
-            JSONdata["player"].append(player.__dict__)
+            JSONdata["players"].append(player.__dict__)
         for match in self.matches:
             JSONdata["matches"].append(match.__dict__)
         return JSONdata
@@ -68,7 +74,7 @@ class Season(object):
         self.players = []
         self.matches = []
 
-        for player in data["player"]:
+        for player in data["players"]:
             self.players.append(Player(player["name"], player["player_id"]))
         for match in data["matches"]:
             self.matches.append(Match(match["playerid1"], match["playerid2"], match["points1"], match["points2"], match["serveplayer"], match["time"]))
@@ -76,6 +82,7 @@ class Season(object):
     def saveData(self, filename):
         season_file = open(filename, "wb")
         temp = self.dataToJSON()
+        print(temp)
         json.dump(temp, season_file, indent=4)
         season_file.close()
 
