@@ -82,7 +82,7 @@ class Season(object):
             return -1
         
         # save match in list
-        match = Match(player1, player2, points1, points2, serveplayer, time)
+        match = Match(player1, player2, points1, points2, serveplayer, time.toPyDateTime())
         self.matches.append(match)
         print("Match added.")
 
@@ -91,7 +91,9 @@ class Season(object):
         for player in self.players:
             JSONdata["players"].append(player.__dict__)
         for match in self.matches:
-            JSONdata["matches"].append(match.__dict__)
+            m = match.__dict__
+            m["time"] = m["time"].__str__()
+            JSONdata["matches"].append(m)
         return JSONdata
 
     def JSONToData(self, data):
@@ -106,7 +108,6 @@ class Season(object):
     def saveData(self, filename):
         season_file = open(filename, "w")
         temp = self.dataToJSON()
-        print(temp)
         json.dump(temp, season_file, indent=4)
         season_file.close()
 

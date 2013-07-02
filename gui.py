@@ -107,8 +107,9 @@ def fillTable():
         MATCHES_DIALOG.view_match_table.setItem(i, j, QtGui.QTableWidgetItem(str(match.points1)));j+=1
         MATCHES_DIALOG.view_match_table.setItem(i, j, QtGui.QTableWidgetItem(str(match.points2)));j+=1
         MATCHES_DIALOG.view_match_table.setItem(i, j, QtGui.QTableWidgetItem(match.serveplayer));j+=1
-        MATCHES_DIALOG.view_match_table.setItem(i, j, QtGui.QTableWidgetItem(match.time.toString()))
+        MATCHES_DIALOG.view_match_table.setItem(i, j, QtGui.QTableWidgetItem(match.time.__str__()))
         i += 1
+
 
 def fillPlayerLists():
     PLAYER_DIALOG.player_list.clear()
@@ -141,6 +142,7 @@ def handle_add_match():
         return
     MANAGER.addMatch(player1, player2, score1, score2, serve_player, time)
     fillTable()
+    MANAGER.saveData(DATA_FILE)
 
 def buildViewStatisticsDialog():
     #view_match_table
